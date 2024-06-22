@@ -4,6 +4,10 @@
 
 This project is a simple Spam Detection App built using Streamlit, Python, and Scikit-learn. It classifies input text messages as either "Spam" or "Ham" (not spam) using a trained machine learning model.
 
+---
+
+# TRY THIS online (HERE!)[https://spam-detection-as-repo1.streamlit.app/]
+
 ## Technology Stack
 
 - **Python**: Programming language used for scripting and machine learning.
