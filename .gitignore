@@ -1,0 +1,29 @@
+# Python
+*.pyc
+*.pyo
+__pycache__
+
+# Virtual environment
+venv/
+env/
+.venv/
+pip-wheel-metadata/
+
+# Streamlit
+.streamlit/
+
+# Model and vectorizer files
+spam_classifier_model.pkl
+tfidf_vectorizer.pkl
+
+# Data and output files (if any)
+data/
+output/
+
+# IDE-specific files (if using PyCharm, VS Code, etc.)
+.idea/
+.vscode/
+
+# the main data
+*.zip
+*.csv

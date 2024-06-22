@@ -1,5 +1,5 @@
 import streamlit as st
-import joblib  # Import joblib to load model and vectorizer
+import joblib
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
