@@ -6,9 +6,11 @@ This project is a simple Spam Detection App built using Streamlit, Python, and S
 
 ---
 
-# TRY THIS online (HERE!)[https://spam-detection-as-repo1.streamlit.app/]
+# Technology Stack
 
-## Technology Stack
+## Deployed Streamlit Application
+
+Visit my spam detection app deployed [here](https://spam-detection-as-repo1.streamlit.app/).
 
 - **Python**: Programming language used for scripting and machine learning.
 - **Streamlit**: Framework used for building and deploying web applications.
