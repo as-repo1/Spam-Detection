@@ -51,7 +51,7 @@
 │  User Input  │───▶│     Preprocessing         │───▶│   TF-IDF       │───▶│  Naive Bayes │
 │  "Free prize │     │  lowercase → tokenize     │     │  Encodes text  │     │  Classifies  │
 │   call now!" │     │  → rm stopwords → stem    │     │  as numbers    │     │  → SPAM ✘    |
-│              │     │                           │     │                │     │    or HAM ✔ │
+│              │     │                           │     │                │     │    or HAM ✔  │
 └──────────────┘     └───────────────────────────┘     └────────────────┘     └──────────────┘
 ```
 
