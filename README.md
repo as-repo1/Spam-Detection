@@ -137,21 +137,6 @@ cd ..
 <tr>
 <td>
 
-```bash
-docker compose up
-```
-
-</td>
-<td>
-
-```bash
-streamlit run app.py
-```
-
-</td>
-</tr>
-</table>
-
 Open **[http://localhost:8501](http://localhost:8501)** and start classifying messages! 🎉
 
 ---
@@ -212,14 +197,14 @@ Then visit **[http://localhost:8501](http://localhost:8501)**.
 └─────────────────────────────────────────────────────┘
 ```
 
-| Feature | Detail |
-|---------|--------|
-| **Multi-stage build** | Dependencies installed in a builder stage; only runtime artifacts copied to the final image |
-| **NLTK pre-baked** | `punkt_tab` and `stopwords` data downloaded at build time — container needs **no internet** at runtime |
-| **Non-root user** | Runs as `appuser` for security |
-| **Health check** | Built-in Docker `HEALTHCHECK` hitting Streamlit's `/_stcore/health` endpoint |
-| **Auto-restart** | `docker-compose.yml` sets `restart: unless-stopped` |
-| **~200MB image** | Slim Python base + only production deps (no pandas, matplotlib, jupyter) |
+| Feature                     | Detail                                                                                                            |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **Multi-stage build** | Dependencies installed in a builder stage; only runtime artifacts copied to the final image                       |
+| **NLTK pre-baked**    | `punkt_tab` and `stopwords` data downloaded at build time — container needs **no internet** at runtime |
+| **Non-root user**     | Runs as `appuser` for security                                                                                  |
+| **Health check**      | Built-in Docker `HEALTHCHECK` hitting Streamlit's `/_stcore/health` endpoint                                  |
+| **Auto-restart**      | `docker-compose.yml` sets `restart: unless-stopped`                                                           |
+| **~200MB image**      | Slim Python base + only production deps (no pandas, matplotlib, jupyter)                                          |
 
 ---
 
@@ -466,7 +451,7 @@ Actual  ├──────────────┼────────
 [![GitHub](https://img.shields.io/badge/GitHub-as--repo1-181717?style=for-the-badge&logo=github)](https://github.com/as-repo1)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-abhinabasarkar22-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/abhinabasarkar22/)
 
-</div>
+###### **star this repo if it helps :)** 
 
 ---
 
