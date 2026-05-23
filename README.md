@@ -28,7 +28,7 @@
 - [Project Structure](#-project-structure)
 - [Getting Started](#-getting-started)
 - [The ML Pipeline In Detail](#-the-ml-pipeline-in-detail)
-  - [Data Loading & Cleaning](#-1-data-loading--cleaning)
+  - [Data Loading &amp; Cleaning](#-1-data-loading--cleaning)
   - [Exploratory Data Analysis](#-2-exploratory-data-analysis)
   - [Text Preprocessing](#-3-text-preprocessing)
   - [Vectorization (TF-IDF)](#-4-vectorization-tf-idf)
@@ -48,10 +48,10 @@
 ```
 ┌──────────────┐     ┌───────────────────────────┐     ┌────────────────┐     ┌──────────────┐
 │              │     │                           │     │                │     │              │
-│  User Input  │────▶│     Preprocessing         │────▶│   TF-IDF       │────▶│  Naive Bayes  │
-│  "Free prize │     │  lowercase → tokenize     │     │  Encodes text  │     │  Classifies   │
-│   call now!" │     │  → rm stopwords → stem    │     │  as numbers    │     │  → SPAM ✘     │
-│              │     │                           │     │                │     │    or HAM ✔   │
+│  User Input  │───▶│     Preprocessing         │───▶│   TF-IDF       │───▶│  Naive Bayes │
+│  "Free prize │     │  lowercase → tokenize     │     │  Encodes text  │     │  Classifies  │
+│   call now!" │     │  → rm stopwords → stem    │     │  as numbers    │     │  → SPAM ✘    |
+│              │     │                           │     │                │     │    or HAM ✔ │
 └──────────────┘     └───────────────────────────┘     └────────────────┘     └──────────────┘
 ```
 
@@ -84,11 +84,11 @@ Spam-Detection/
     └── spam.csv                       → SMS Spam Collection from Kaggle
 ```
 
-| Directory | What's inside | Tracked in git? |
-|-----------|--------------|:-:|
-| `notebooks/` | Training pipeline — run once to generate models | ✅ |
-| `models/` | Serialized `.pkl` artifacts | ❌ (regenerate via notebook) |
-| `data/` | Raw CSV dataset | ❌ (download from [Kaggle](https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset)) |
+| Directory      | What's inside                                    |                                      Tracked in git?                                      |
+| -------------- | ------------------------------------------------ | :----------------------------------------------------------------------------------------: |
+| `notebooks/` | Training pipeline — run once to generate models |                                             ✅                                             |
+| `models/`    | Serialized `.pkl` artifacts                    |                                ❌ (regenerate via notebook)                                |
+| `data/`      | Raw CSV dataset                                  | ❌ (download from[Kaggle](https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset)) |
 
 ---
 
@@ -141,13 +141,13 @@ Open **[http://localhost:8501](http://localhost:8501)** and start classifying me
 
 The raw dataset (`spam.csv`) has **5,572 SMS messages** with columns `v1` (label) and `v2` (text), plus three junk columns.
 
-| Step | What happens | Result |
-|------|-------------|--------|
-| Drop columns | Remove `Unnamed: 2/3/4` | 2 columns remain |
-| Rename | `v1` → `target`, `v2` → `text` | Clean column names |
-| Encode labels | `LabelEncoder`: `ham` → `0`, `spam` → `1` | Numeric targets |
-| Null check | `df.isnull().sum()` | No missing values ✅ |
-| Deduplicate | `drop_duplicates(keep="first")` | **5,572 → 5,169 rows** (403 dupes removed) |
+| Step          | What happens                                          | Result                                            |
+| ------------- | ----------------------------------------------------- | ------------------------------------------------- |
+| Drop columns  | Remove `Unnamed: 2/3/4`                             | 2 columns remain                                  |
+| Rename        | `v1` → `target`, `v2` → `text`              | Clean column names                                |
+| Encode labels | `LabelEncoder`: `ham` → `0`, `spam` → `1` | Numeric targets                                   |
+| Null check    | `df.isnull().sum()`                                 | No missing values ✅                              |
+| Deduplicate   | `drop_duplicates(keep="first")`                     | **5,572 → 5,169 rows** (403 dupes removed) |
 
 ---
 
@@ -157,11 +157,11 @@ The dataset is **imbalanced** — roughly **87% ham** vs **13% spam**.
 
 The notebook engineers three features per message and compares distributions:
 
-| Feature | Ham (avg) | Spam (avg) | Insight |
-|---------|-----------|------------|---------|
-| `num_characters` | ~71 | ~139 | Spam messages are **~2× longer** |
-| `num_words` | ~15 | ~25 | Spam uses more words |
-| `num_sentences` | ~2 | ~3 | Spam has more sentences |
+| Feature            | Ham (avg) | Spam (avg) | Insight                                |
+| ------------------ | --------- | ---------- | -------------------------------------- |
+| `num_characters` | ~71       | ~139       | Spam messages are**~2× longer** |
+| `num_words`      | ~15       | ~25        | Spam uses more words                   |
+| `num_sentences`  | ~2        | ~3         | Spam has more sentences                |
 
 > **Key takeaway**: Spam messages tend to be significantly longer than legitimate ones — they pack in more "urgency" words and fake offers.
 
@@ -209,13 +209,13 @@ OUTPUT: "free entri 2 wkli comp win fa cup final tkt"
 <details>
 <summary><b>Why each step matters</b></summary>
 
-| Step | Why? |
-|------|------|
-| **Lowercase** | `"FREE"` and `"free"` should be the same word |
-| **Tokenize** | Splits text into individual words for processing |
-| **Alphanumeric filter** | Removes punctuation and special chars that don't help classify |
-| **Stopword removal** | Drops common words (`"the"`, `"is"`, `"at"`) that appear equally in spam and ham |
-| **Stemming** | Reduces inflected words to roots (`"running"` → `"run"`) so variations are treated as identical |
+| Step                          | Why?                                                                                                 |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------- |
+| **Lowercase**           | `"FREE"` and `"free"` should be the same word                                                    |
+| **Tokenize**            | Splits text into individual words for processing                                                     |
+| **Alphanumeric filter** | Removes punctuation and special chars that don't help classify                                       |
+| **Stopword removal**    | Drops common words (`"the"`, `"is"`, `"at"`) that appear equally in spam and ham               |
+| **Stemming**            | Reduces inflected words to roots (`"running"` → `"run"`) so variations are treated as identical |
 
 </details>
 
@@ -229,11 +229,11 @@ After preprocessing, each message is a string of stemmed words. Machines need nu
 TfidfVectorizer(max_features=3000)
 ```
 
-| Component | What it measures | Example |
-|-----------|-----------------|---------|
-| **TF** (Term Frequency) | How often a word appears in *this* message | `"free"` appears 3 times → high TF |
-| **IDF** (Inverse Document Frequency) | How rare a word is across *all* messages | `"congratulations"` is rare → high IDF |
-| **TF × IDF** | Final weight: frequent *here*, rare *everywhere* | High weight = distinctive for this message |
+| Component                                  | What it measures                                    | Example                                    |
+| ------------------------------------------ | --------------------------------------------------- | ------------------------------------------ |
+| **TF** (Term Frequency)              | How often a word appears in*this* message         | `"free"` appears 3 times → high TF      |
+| **IDF** (Inverse Document Frequency) | How rare a word is across*all* messages           | `"congratulations"` is rare → high IDF  |
+| **TF × IDF**                        | Final weight: frequent*here*, rare *everywhere* | High weight = distinctive for this message |
 
 > **`max_features=3000`**: Only the top 3,000 most informative terms are kept. This reduces dimensionality and prevents overfitting on rare words.
 
@@ -249,13 +249,13 @@ model = MultinomialNB()
 model.fit(X_train, y_train)
 ```
 
-| Detail | Value |
-|--------|-------|
-| Train/Test Split | 80% / 20% |
-| Training samples | 4,135 |
-| Test samples | 1,034 |
-| Random state | 42 (reproducible) |
-| Algorithm | Multinomial Naive Bayes |
+| Detail           | Value                   |
+| ---------------- | ----------------------- |
+| Train/Test Split | 80% / 20%               |
+| Training samples | 4,135                   |
+| Test samples     | 1,034                   |
+| Random state     | 42 (reproducible)       |
+| Algorithm        | Multinomial Naive Bayes |
 
 <details>
 <summary><b>Why Multinomial Naive Bayes?</b></summary>
@@ -274,11 +274,11 @@ model.fit(X_train, y_train)
 
 The model is evaluated on the held-out test set (1,034 messages):
 
-| | Precision | Recall | F1-Score | Support |
-|---|:-:|:-:|:-:|:-:|
-| **Ham** (0) | 0.97 | 1.00 | 0.98 | 889 |
-| **Spam** (1) | 0.99 | 0.81 | 0.89 | 145 |
-| **Overall Accuracy** | | | **0.972** | 1,034 |
+|                            | Precision | Recall |    F1-Score    | Support |
+| -------------------------- | :-------: | :----: | :-------------: | :-----: |
+| **Ham** (0)          |   0.97   |  1.00  |      0.98      |   889   |
+| **Spam** (1)         |   0.99   |  0.81  |      0.89      |   145   |
+| **Overall Accuracy** |          |        | **0.972** |  1,034  |
 
 **What do these numbers mean?**
 
@@ -316,12 +316,12 @@ prediction = model.predict(vectorizer.transform([processed]))[0]
 
 **Design decisions:**
 
-| Choice | Why |
-|--------|-----|
-| `@st.cache_resource` | Load model from disk **once**, not on every click |
-| `frozenset` stopwords | O(1) lookup vs O(n) list scan per token |
+| Choice                    | Why                                                                  |
+| ------------------------- | -------------------------------------------------------------------- |
+| `@st.cache_resource`    | Load model from disk**once**, not on every click               |
+| `frozenset` stopwords   | O(1) lookup vs O(n) list scan per token                              |
 | `Path`-based resolution | App finds model files relative to itself — works from any directory |
-| Input validation | Empty messages show a warning instead of a meaningless prediction |
+| Input validation          | Empty messages show a warning instead of a meaningless prediction    |
 
 ---
 
@@ -341,12 +341,12 @@ Actual  ├──────────────┼────────
         └──────────────┴──────────────┘
 ```
 
-| | Count | Meaning |
-|---|:-:|---|
-| ✅ True Positives | 117 | Spam correctly caught |
-| ✅ True Negatives | 888 | Ham correctly passed |
-| ⚠️ False Negatives | 28 | Spam that slipped through |
-| ❌ False Positives | 1 | Ham incorrectly flagged as spam |
+|                      | Count | Meaning                         |
+| -------------------- | :---: | ------------------------------- |
+| ✅ True Positives    |  117  | Spam correctly caught           |
+| ✅ True Negatives    |  888  | Ham correctly passed            |
+| ⚠️ False Negatives |  28  | Spam that slipped through       |
+| ❌ False Positives   |   1   | Ham incorrectly flagged as spam |
 
 </div>
 
@@ -354,16 +354,16 @@ Actual  ├──────────────┼────────
 
 ## 🛠️ Tech Stack
 
-| Component | Tool | Purpose |
-|:-:|:-:|---|
-| 🐍 | **Python 3.10+** | Core programming language |
-| 🤖 | **scikit-learn** | Model training, TF-IDF vectorization, evaluation |
-| 📝 | **NLTK** | Tokenization, stopword removal, Porter stemming |
-| 💾 | **joblib** | Serialize/deserialize trained model & vectorizer |
-| 🌐 | **Streamlit** | Interactive web frontend for predictions |
-| 🐼 | **pandas / NumPy** | Data loading, cleaning, manipulation |
-| 📊 | **matplotlib / seaborn** | EDA visualizations and distribution plots |
-| 📂 | **SMS Spam Collection** | 5,572 labeled SMS messages ([Kaggle](https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset)) |
+| Component |              Tool              | Purpose                                                                                               |
+| :-------: | :----------------------------: | ----------------------------------------------------------------------------------------------------- |
+|    🐍    |     **Python 3.10+**     | Core programming language                                                                             |
+|    🤖    |     **scikit-learn**     | Model training, TF-IDF vectorization, evaluation                                                      |
+|    📝    |         **NLTK**         | Tokenization, stopword removal, Porter stemming                                                       |
+|    💾    |        **joblib**        | Serialize/deserialize trained model & vectorizer                                                      |
+|    🌐    |      **Streamlit**      | Interactive web frontend for predictions                                                              |
+|    🐼    |    **pandas / NumPy**    | Data loading, cleaning, manipulation                                                                  |
+|    📊    | **matplotlib / seaborn** | EDA visualizations and distribution plots                                                             |
+|    📂    | **SMS Spam Collection** | 5,572 labeled SMS messages ([Kaggle](https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset)) |
 
 ---
 
