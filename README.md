@@ -7,6 +7,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3+-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.30+-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](Dockerfile)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 *Takes a raw text message → processes it through an NLP pipeline → predicts **spam** or **ham***
@@ -36,6 +37,7 @@
   - [Evaluation](#-6-evaluation)
 - [How the Web App Works](#-how-the-web-app-works)
 - [Model Performance](#-model-performance)
+- [Docker](#-docker)
 - [Tech Stack](#%EF%B8%8F-tech-stack)
 - [Author](#-author)
 
@@ -69,6 +71,8 @@
 Spam-Detection/
 │
 ├── 🖥️  app.py                         → Streamlit web app (serving layer)
+├── 🐳  Dockerfile                     → Multi-stage container build
+├── 🐳  docker-compose.yml             → One-command container launch
 ├── 📦  pyproject.toml                  → Project metadata & pinned dependencies
 ├── 📋  requirements.txt               → Flat deps (Streamlit Cloud compat)
 ├── 📄  LICENSE                         → MIT License
@@ -125,11 +129,97 @@ cd ..
 
 ### Launch the App
 
+<table>
+<tr>
+<th>🐳 Docker (recommended)</th>
+<th>🐍 Local Python</th>
+</tr>
+<tr>
+<td>
+
+```bash
+docker compose up
+```
+
+</td>
+<td>
+
 ```bash
 streamlit run app.py
 ```
 
+</td>
+</tr>
+</table>
+
 Open **[http://localhost:8501](http://localhost:8501)** and start classifying messages! 🎉
+
+---
+
+## 🐳 Docker
+
+The project ships with full Docker support — **no Python installation required** on the host machine.
+
+### Quick Run (Docker Compose)
+
+```bash
+# Build and start in one command
+docker compose up
+
+# Or run in detached mode (background)
+docker compose up -d
+
+# Stop the container
+docker compose down
+```
+
+### Manual Docker Commands
+
+```bash
+# Build the image
+docker build -t spam-detector .
+
+# Run the container
+docker run -p 8501:8501 spam-detector
+
+# Run in background
+docker run -d -p 8501:8501 --name spam-detector spam-detector
+```
+
+Then visit **[http://localhost:8501](http://localhost:8501)**.
+
+### How the Docker Image Works
+
+```
+┌─────────────────────────────────────────────────────┐
+│                  BUILD STAGE                        │
+│  python:3.12-slim                                   │
+│  ├── pip install requirements.txt                   │
+│  └── nltk.download(punkt_tab, stopwords)            │
+└───────────────────────┬─────────────────────────────┘
+                        │ COPY only what's needed
+                        ▼
+┌─────────────────────────────────────────────────────┐
+│                 RUNTIME STAGE                       │
+│  python:3.12-slim                                   │
+│  ├── Site-packages (streamlit, sklearn, nltk, etc.) │
+│  ├── NLTK data (punkt_tab, stopwords)               │
+│  ├── app.py                                         │
+│  ├── models/*.pkl                                   │
+│  └── Runs as non-root user (appuser)                │
+│                                                     │
+│  EXPOSE 8501     HEALTHCHECK ✓     No internet req  │
+└─────────────────────────────────────────────────────┘
+```
+
+| Feature | Detail |
+|---------|--------|
+| **Multi-stage build** | Dependencies installed in a builder stage; only runtime artifacts copied to the final image |
+| **NLTK pre-baked** | `punkt_tab` and `stopwords` data downloaded at build time — container needs **no internet** at runtime |
+| **Non-root user** | Runs as `appuser` for security |
+| **Health check** | Built-in Docker `HEALTHCHECK` hitting Streamlit's `/_stcore/health` endpoint |
+| **Auto-restart** | `docker-compose.yml` sets `restart: unless-stopped` |
+| **~200MB image** | Slim Python base + only production deps (no pandas, matplotlib, jupyter) |
 
 ---
 

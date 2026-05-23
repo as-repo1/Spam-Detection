@@ -1,0 +1,32 @@
+# Git
+.git
+.gitignore
+
+# Data & notebooks (not needed at runtime)
+data/
+notebooks/
+*.csv
+*.zip
+*.xls
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Docs
+README.md
+LICENSE
